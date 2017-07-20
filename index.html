@@ -29,7 +29,7 @@
 				<div class="col-md-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							Panel heading without title
+							Titulo Caja
 						</div>
 						<div class="panel-body">
 							<div class="row">
@@ -43,7 +43,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div>			
 			<div class="row">
 				<div class="col-md-12">
 					<div class="panel panel-default" ng-init="ctrl.isCollapsed = true">
@@ -110,23 +110,26 @@
 				<div class="col-md-12">
 					<table class="table table-striped">
 						<tr>
-							<th>Col 1</th>
-							<th>Col 2</th>
-							<th>Col 3</th>
-							<th>Col 4</th>
-							<th>Col 5</th>
+							<th>Id</th>
+							<th>Nombre</th>
+							<th>Fecha Inicio</th>
+							<th>Fecha Fin</th>
+							<th>Estado</th>
+							<th>Monto</th>
 						</tr>
-						<tr>
-							<td>sdf</td>
-							<td>dsfdsf</td>
-							<td>sdfds</td>
-							<td>fsdfd</td>
-							<td>12321</td>
+						<tr ng-repeat="row in ctrl.arrAux">
+							<td>{{row.id}}</td>
+							<td>{{row.nombre | capitalizar}}</td>
+							<td>{{row.fechaInicio}}</td>
+							<td>{{row.fechaFin}}</td>
+							<td>{{row.estado}}</td>
+							<td>{{row.monto | currency : "$ " : 0}}</td>
 						</tr>
 					</table>					
-				</div>
+				</div>				
 				<div class="col-md-12" align="center">
-					<ul uib-pagination boundary-links="true" total-items="ctrl.totalItems" ng-model="ctrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+					<ul uib-pagination boundary-links="true" ng-model="ctrl.currentPage" ng-change="ctrl.pageChange()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+						total-items="ctrl.totalItems" items-per-page="ctrl.pageSize" ></ul>
 				</div>				
 			</div>
 		</div>			
