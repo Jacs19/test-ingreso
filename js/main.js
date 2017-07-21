@@ -3,6 +3,7 @@
 
     angular.module('main', ['ui.bootstrap'])
 		.controller('AppController', AppController)
+		.filter('paginar', Paginar)
 		.filter('capitalizar', Capitalizar);
 		
 	//---------->[INYECCION DEPENDENCIAS]<--------------------------------------
@@ -161,19 +162,44 @@
 			}		
 		];
 		
-		vm.totalItems 	= vm.lista.length;
-		vm.pageSize 	= 5;
-		vm.currentPage 	= 1;	
-		vm.arrAux 		= vm.lista.slice(((vm.currentPage * vm.pageSize) - vm.pageSize), (vm.currentPage * vm.pageSize));
+		vm.listaEstados = ["seleccione...", "aprobado", "pendiente", "rechazado"];		
 		
-		vm.pageChange = pageChange;
+		vm.totalItems 		= vm.lista.length;
+		vm.pageSize 		= 5;
+		vm.currentPage 		= 1;	
+		//vm.arrAux 			= vm.lista.slice(((vm.currentPage * vm.pageSize) - vm.pageSize), (vm.currentPage * vm.pageSize));
+		vm.estadoSelected 	= "seleccione...";
+		vm.search;
+		vm.fechaIniSelected;
+		vm.fechaFinSelected;
 		
-		function pageChange(){
-			vm.arrAux = vm.lista.slice(((vm.currentPage * vm.pageSize) - vm.pageSize), (vm.currentPage * vm.pageSize));
+		//Functions		
+		vm.filtrar = filtrar;
+		//------------------------->[FIN DECLARACION VARIABLES]<--------------------
+		
+		//------------------------->[FUNCTIONS]<--------------------				
+		function filtrar(){
+			if(vm.search !== undefined){
+				return vm.search;
+			}
+			if(vm.estadoSelected !== "seleccione..."){
+				return vm.estadoSelected;
+			}
 		}
 		
 	}
 	//---------->[FIN CONTROLADOR PRINCIPAL]<-----------------------------------
+	
+	//---------->[FILTERS]<-----------------------------------
+	function Paginar() {
+        return function (lista, currentPage, pageSize) {
+			var arr = [];
+            if(lista.length > 0){
+				arr = lista.slice(((currentPage * pageSize) - pageSize), (currentPage * pageSize));
+			}
+            return arr;
+        };
+    }	
 	
 	function Capitalizar() {
         return function (texto) {
@@ -190,5 +216,6 @@
             return palabras.join(' ');
         };
     }
+	//---------->[FIN FILTERS]<-----------------------------------
 		
 })();

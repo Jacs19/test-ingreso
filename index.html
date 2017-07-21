@@ -17,7 +17,8 @@
 		<div class="content" style="margin:20px">	
 			<div class="row" style="background-color:rgb(0,33,87)">
 				<div class="col-md-12">
-					<h1 style="color:rgb(255,255,255)">Banco de Chile</h1>
+					<!--<h1 style="color:rgb(255,255,255)">Banco de Chile</h1>-->
+					<img src="img/logo-sprite.png">
 				</div>
 			</div>
 			<div class="row">
@@ -65,26 +66,23 @@
 								<div class="col-md-12">								
 									<div class="col-md-4">	
 										<div class="input-group">
-											<input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+											<input type="text" class="form-control" placeholder="Fecha Inicio" aria-describedby="basic-addon2" ng-model="ctrl.fechaIniSelected">
 											<span class="input-group-addon" id="basic-addon2"></span>
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="input-group">
-											<input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+											<input type="text" class="form-control" placeholder="Fecha Fin" aria-describedby="basic-addon2" ng-model="ctrl.fechaFinSelected">
 											<span class="input-group-addon" id="basic-addon2"></span>
 										</div>
 									</div>
-									<div class="col-md-4">
-										<div class="dropdown">
-											<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-												Dropdown
-												<span class="caret"></span>
+									<div class="col-md-4" align="center">
+										<div class="btn-group" uib-dropdown is-open="status.isopen">
+											<button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+												{{ctrl.estadoSelected |capitalizar}} <span class="caret"></span>
 											</button>
-											<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-												<li><a href="#">Action</a></li>
-												<li><a href="#">Another action</a></li>
-												<li><a href="#">Something else here</a></li>												
+											<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+												<li role="menuitem" ng-repeat="row in ctrl.listaEstados"><a ng-click="ctrl.estadoSelected = row">{{row | capitalizar}}</a></li>												
 											</ul>
 										</div>
 									</div>
@@ -94,11 +92,11 @@
 								</div>
 								<div class="col-md-12">								
 									<div class="col-md-10">
-										<input type="text" class="form-control" placeholder="Search for...">
+										<input type="text" class="form-control" placeholder="Search for..." ng-model="ctrl.search">
 										<br/>
 									</div>									
 									<div class="col-md-2" align="right">										
-										<button type="button" class="btn btn-primary">Buscar</button>
+										<button type="button" class="btn btn-primary" ng-click="ctrl.filtrar()">Buscar</button>
 									</div>
 								</div>
 							</div>
@@ -117,18 +115,18 @@
 							<th>Estado</th>
 							<th>Monto</th>
 						</tr>
-						<tr ng-repeat="row in ctrl.arrAux">
+						<tr ng-repeat="row in ctrl.lista | filter: ctrl.filtrar() | paginar : ctrl.currentPage : ctrl.pageSize">
 							<td>{{row.id}}</td>
 							<td>{{row.nombre | capitalizar}}</td>
 							<td>{{row.fechaInicio}}</td>
 							<td>{{row.fechaFin}}</td>
-							<td>{{row.estado}}</td>
+							<td>{{row.estado | capitalizar}}</td>
 							<td>{{row.monto | currency : "$ " : 0}}</td>
 						</tr>
 					</table>					
 				</div>				
 				<div class="col-md-12" align="center">
-					<ul uib-pagination boundary-links="true" ng-model="ctrl.currentPage" ng-change="ctrl.pageChange()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+					<ul uib-pagination boundary-links="true" ng-model="ctrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
 						total-items="ctrl.totalItems" items-per-page="ctrl.pageSize" ></ul>
 				</div>				
 			</div>
